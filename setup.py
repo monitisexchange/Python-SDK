@@ -7,5 +7,7 @@ setup(name='Monitis-SDK',
       description='Monitis API SDK',
       author='Jeremiah Shirk',
       author_email='jshirk@gmail.com',
-      packages=['monitis'],
+      packages=['monitis',
+                'monitis.monitors',
+               ],
       )
