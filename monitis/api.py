@@ -48,6 +48,36 @@ def decode_json(json=None):
     except ValueError, error:
         raise MonitisError(': '.join(['JSON parse error', str(error)]))
 
+def resolve_apikey():
+    '''Resolve the Monitis API key outside of a Monitis instance'''
+    # check the class variable
+    apikey = Monitis.apikey
+    if apikey is not None:
+        return apikey
+    
+    # get the value from the environment
+    apikey = environ_key('MONITIS_APIKEY')
+    if apikey is not None:
+        return apikey
+    
+    # if we got this far, the API key wasn't found
+    raise MonitisError('The Monitis API key is required')
+    
+def resolve_secretkey():
+    '''Resolve the Monitis secret key outside of a Monitis instance'''
+    # check the class variable
+    secretkey = Monitis.secretkey
+    if secretkey is not None:
+        return secretkey
+    
+    # get the value from the environment
+    secretkey = environ_key('MONITIS_SECRETKEY')
+    if secretkey is not None:
+        return secretkey
+    
+    # if we got this far, the API key wasn't found
+    raise MonitisError('The Monitis secret key is required')
+
 def environ_key(name=None):
     """Helper method to get a key from os.environ
     
@@ -57,20 +87,6 @@ def environ_key(name=None):
         return os.environ[name]
     except KeyError:
         return None
-
-def resolve_apikey():
-    """Resolve the Monitis API Key from the invoking shell
-    
-    Find the API Key in the shell environment variable MONITIS_APIKEY
-    """
-    return environ_key('MONITIS_APIKEY')
-
-def resolve_secretkey():
-    """Resolve the Monitis Secret Key from the invoking shell
-    
-    Find the API Key in the shell environment variable MONITIS_SECRETKEY
-    """
-    return environ_key('MONITIS_SECRETKEY')
 
 def timestamp():
     """Timestamp in the format required for Monitis API post requests
@@ -135,7 +151,58 @@ class Monitis:
     '''
     
     debug = False
+    sandbox = False
+    apikey = None
+    secretkey = None
     
+    def resolve_apikey(self):
+        """Resolve the Monitis API Key from the invoking shell
+
+        Find the API Key 
+        
+        First, check for a key local to this instance of Monitis.
+        If not found in the instance, then check the class.  Finally,
+        check the environment variable.  If no key is found in any of these
+        places, then raise an exception.
+        
+        """
+        # check the instance variable
+        apikey = self.apikey
+        if apikey is not None:
+            return apikey
+        
+        # check the class variable and environment
+        apikey = resolve_apikey()
+        if apikey is not None:
+            return apikey
+        
+        # if we got this far, the API key wasn't found
+        raise MonitisError('The Monitis API key is required')
+
+    def resolve_secretkey(self):
+        """Resolve the Monitis Secret Key from the invoking shell
+
+        Find the secret key
+        
+        First, check for a key local to this instance of Monitis.
+        If not found in the instance, then check the class.  Finally,
+        check the environment variable.  If no key is found in any of these
+        places, then raise an exception.
+        
+        """
+        # check the instance variable
+        secretkey = self.secretkey
+        if secretkey is not None:
+            return secretkey
+        
+        # check the class variable
+        secretkey = resolve_secretkey()
+        if secretkey is not None:
+            return secretkey
+                
+        # if we got this far, the secret key wasn't found
+        raise MonitisError('The Monitis secret key is required')
+        
     def __init__(self, apikey=None, secretkey=None, url=None,
                  version=None, validation=None):
         '''Create a new Monitis object'''
