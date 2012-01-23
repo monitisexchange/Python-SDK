@@ -4,7 +4,6 @@ from time import time
 from unittest import TestCase
 from nose.tools import *
 
-from monitis.monitors.custom import CustomMonitor
 from monitis.api import get, resolve_apikey, resolve_secretkey, Monitis
 from monitis.api import MonitisError, timestamp, checktime, decode_json
 from monitis.api import environ_key
