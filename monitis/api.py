@@ -41,6 +41,12 @@ class MonitisError(Exception):
 # API operations on existing instances are methods
 # Other API operations, new operations, and helpers are functions
 
+def _api_url():
+    if Monitis.sandbox is True:
+        return Monitis.sandbox_url
+    else:
+        return Monitis.default_url
+        
 def decode_json(json=None):
     '''Deserialize json to a python object.'''
     try:
@@ -56,7 +62,10 @@ def resolve_apikey():
         return apikey
     
     # get the value from the environment
-    apikey = environ_key('MONITIS_APIKEY')
+    if Monitis.sandbox is True:
+        apikey = environ_key('MONITIS_SANDBOX_APIKEY')
+    else:
+        apikey = environ_key('MONITIS_APIKEY')
     if apikey is not None:
         return apikey
     
@@ -71,7 +80,10 @@ def resolve_secretkey():
         return secretkey
     
     # get the value from the environment
-    secretkey = environ_key('MONITIS_SECRETKEY')
+    if Monitis.sandbox is True:
+        secretkey = environ_key('MONITIS_SANDBOX_SECRETKEY')
+    else:
+        secretkey = environ_key('MONITIS_SECRETKEY')
     if secretkey is not None:
         return secretkey
     
@@ -105,12 +117,15 @@ def checktime():
     return str(int(time())) + "000"
 
 def get(apikey=None, action=None, version='2',
-        url='http://monitis.com/api', **kwargs):
+        url=None, **kwargs):
     """GET requests to the Monitis API
     
     Returns Python objects based on the JSON-encoded responses
     """
 
+    if url is None:
+        url = _api_url()
+    
     output = 'JSON' # don't allow XML, so we can parse JSON response
     apikey = apikey or resolve_apikey()
     
@@ -154,6 +169,8 @@ class Monitis:
     sandbox = False
     apikey = None
     secretkey = None
+    default_url = 'http://monitis.com/api'
+    sandbox_url = 'http://sandbox.monitis.com/api'
     
     def resolve_apikey(self):
         """Resolve the Monitis API Key from the invoking shell
@@ -207,7 +224,7 @@ class Monitis:
                  version=None, validation=None):
         '''Create a new Monitis object'''
         self.auth_token = None
-        self.url = url or 'http://monitis.com/api'
+        self.url = url or _api_url()
         self.apikey = apikey or resolve_apikey()
         self.secretkey = secretkey or resolve_secretkey()
         self.validation = validation or 'HMACSHA1' # TODO: implement authToken

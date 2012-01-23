@@ -4,6 +4,7 @@ from time import time
 from unittest import TestCase
 from nose.tools import *
 
+from monitis.monitors.custom import CustomMonitor
 from monitis.api import get, resolve_apikey, resolve_secretkey, Monitis
 from monitis.api import MonitisError, timestamp, checktime, decode_json
 from monitis.api import environ_key
@@ -12,6 +13,7 @@ from monitis.api import environ_key
 class TestMonitisApi:
     def setUp(self):
         self.mon = Monitis()
+        Monitis.sandbox = True
     
     def test_environ_key(self):
         env_key = environ_key("HOME")

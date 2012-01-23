@@ -22,6 +22,7 @@ class TestCustomMonitor:
     def setUpClass(self):
         # Turn on API debugging
         Monitis.debug = True
+        Monitis.sandbox = True
         
         self.result_params = ResultParams('foo',
                                    'Foo Rate',
