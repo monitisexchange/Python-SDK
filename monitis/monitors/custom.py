@@ -130,32 +130,7 @@ class CustomMonitor(Monitis):
         Monitis.__init__(self, apikey=apikey, secretkey=secretkey,
                          url=customurl, version=version,
                          validation=validation)
-    
-    # def debug(self, newstate=None):
-    #     '''Get or set debugging state
-    #     
-    #     When debug is set to true, this instance of CustomMonitor will
-    #     emit debug messages on stdout.
-    #     
-    #     newstate -- if supplied, the debugging state will be set to this value
-    #     
-    #     Returns the state of debugging (True or False).  If a new state has
-    #     been passed in, it will update the state and return that value.
-    #     
-    #     Raises MonitisError if anything other than None, True, or False is 
-    #     passed in.
-    #     '''
-    #     if newstate is None:
-    #         pass
-    #     elif newstate is True:
-    #         self.debug = True
-    #     elif newstate is False:
-    #         self.debug = False
-    #     else:
-    #         raise MonitisError("Expected None or a boolean as input")
-    #     
-    #     return self.debug
-    
+
     def get_monitor_info(self):
         """Return the information for an existing CustomMonitor instance"""
         return get_monitor_info(monitor_id=self.monitor_id)
