@@ -3,4 +3,4 @@ notes.txt
 *.pyc
 .coverage
 .ropeproject
-examples
+examples/*_record_load.py
