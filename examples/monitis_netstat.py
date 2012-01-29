@@ -89,11 +89,11 @@ def call_netstat():
     platform_str = platform.platform()
     if match('Linux', platform_str):
         netstat_tcp_cmd = \
-            'netstat -s --tcp | egrep "segments (received|sen)$"'
+            'netstat -s --tcp | egrep "segments (received|sen)"'
         tcp_in_match = '(\d+) segments received'
         tcp_out_match = '(\d+) segments sen'
         netstat_udp_cmd = \
-            'netstat -s --udp | egrep "packets (received|sen)$"'
+            'netstat -s --udp | egrep "packets (received|sen)"'
         udp_in_match = '(\d+) packets received'
         udp_out_match = '(\d+) packets sen'
     elif match('Darwin',platform_str):
