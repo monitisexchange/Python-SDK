@@ -10,7 +10,8 @@ Copyright (c) 2012 Monitis. All rights reserved.
 import sys
 import getopt
 from subprocess import Popen, PIPE
-from re import findall
+from re import findall,match
+import platform
 
 from monitis.monitors.custom import CustomMonitor, get_monitors
 from monitis.monitors.params import ResultParams, DataType
@@ -83,19 +84,31 @@ def delete_monitor(id):
 
 def call_netstat():
     '''Quick and dirty but portable way to get packet stats'''
+    
+    # need platform to know how to call netstat
+    platform_str = platform.platform()
+    if match('Linux', platform_str):
+        netstat_tcp_cmd = \
+            'netstat -s --tcp | egrep "segments (received|send)$"'
+        netstat_udp_cmd = \
+            'netstat -s --udp | egrep "packets (received|send)$"'
+    elif match('Darwin',platform_str):
+        netstat_tcp_cmd = \
+            'netstat -s -p tcp | egrep "packets (received|sent)$"'
+        netstat_udp_cmd = \
+            'netstat -s -p udp | egrep "datagrams (received|output)$"'
+    else:
+        raise Usage('Unknown platform')
+    
     # using shell=True for convenience, avoid user-supplied input for safety
     # TCP
-    subproc = Popen(
-        'netstat -s -p tcp | egrep "packets (received|sent)$"', shell=True,
-        stdout=PIPE)
+    subproc = Popen(netstat_tcp_cmd, shell=True, stdout=PIPE)
     (netstat_out, netstat_err) = subproc.communicate()
     count = {'tcp':{},'udp':{}}
     count['tcp']['rx'] = findall('(\d+) packets received', netstat_out)[0]
     count['tcp']['tx'] = findall('(\d+) packets sent', netstat_out)[0]
     # UDP
-    subproc = Popen(
-        'netstat -s -p udp | egrep "datagrams (received|output)$"',
-        shell=True, stdout=PIPE)
+    subproc = Popen(netstat_udp_cmd, shell=True, stdout=PIPE)
     (netstat_out, netstat_err) = subproc.communicate()
     count['udp']['rx'] = findall('(\d+) datagrams received', netstat_out)[0]
     count['udp']['tx'] = findall('(\d+) datagrams output', netstat_out)[0]
