@@ -89,14 +89,22 @@ def call_netstat():
     platform_str = platform.platform()
     if match('Linux', platform_str):
         netstat_tcp_cmd = \
-            'netstat -s --tcp | egrep "segments (received|send)$"'
+            'netstat -s --tcp | egrep "segments (received|sen)$"'
+        tcp_in_match = '(\d+) segments received'
+        tcp_out_match = '(\d+) segments sen'
         netstat_udp_cmd = \
-            'netstat -s --udp | egrep "packets (received|send)$"'
+            'netstat -s --udp | egrep "packets (received|sen)$"'
+        udp_in_match = '(\d+) packets received'
+        udp_out_match = '(\d+) packets sen'
     elif match('Darwin',platform_str):
         netstat_tcp_cmd = \
             'netstat -s -p tcp | egrep "packets (received|sent)$"'
+        tcp_in_match = '(\d+) packets received'
+        tcp_out_match = '(\d+) packets sent'
         netstat_udp_cmd = \
             'netstat -s -p udp | egrep "datagrams (received|output)$"'
+        udp_in_match = '(\d+) datagrams received'
+        udp_out_match = '(\d+) datagrams output'
     else:
         raise Usage('Unknown platform')
     
@@ -105,13 +113,13 @@ def call_netstat():
     subproc = Popen(netstat_tcp_cmd, shell=True, stdout=PIPE)
     (netstat_out, netstat_err) = subproc.communicate()
     count = {'tcp':{},'udp':{}}
-    count['tcp']['rx'] = findall('(\d+) packets received', netstat_out)[0]
-    count['tcp']['tx'] = findall('(\d+) packets sent', netstat_out)[0]
+    count['tcp']['rx'] = findall(tcp_in_match, netstat_out)[0]
+    count['tcp']['tx'] = findall(tcp_out_match, netstat_out)[0]
     # UDP
     subproc = Popen(netstat_udp_cmd, shell=True, stdout=PIPE)
     (netstat_out, netstat_err) = subproc.communicate()
-    count['udp']['rx'] = findall('(\d+) datagrams received', netstat_out)[0]
-    count['udp']['tx'] = findall('(\d+) datagrams output', netstat_out)[0]
+    count['udp']['rx'] = findall(udp_in_match, netstat_out)[0]
+    count['udp']['tx'] = findall(udp_out_match, netstat_out)[0]
     return count
 
 def update_monitor(id):
