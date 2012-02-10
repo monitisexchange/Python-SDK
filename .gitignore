@@ -1,5 +1,6 @@
 build
 notes.txt
+notes
 *.pyc
 .coverage
 .ropeproject
