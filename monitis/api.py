@@ -12,7 +12,7 @@ from hashlib import sha1
 from hmac import new as new_hmac
 from base64 import b64encode
 from datetime import datetime
-from time import time
+from time import time, mktime
 from urllib import urlencode
 from urllib2 import Request, urlopen, HTTPError
 from json import loads
@@ -108,13 +108,22 @@ def timestamp():
     """
     return datetime.utcnow().strftime("%F %T")
 
-def checktime():
+def checktime(dt=None):
     """Timestamp in the format required for monitor results
 
+    dt - optional datetime
+    
     Returns a string containing number of milliseconds 
-    since January 1, 1970, 00:00:00 GMT
+    since January 1, 1970, 00:00:00 GMT. If the optional argument
+    dt is provided, then return the value as of the time as represented by
+    that datetime object.  If no argument is provided, return the value as
+    of now.
     """
-    return str(int(time())) + "000"
+    if dt is None:
+        epoch_time = str(int(time()))
+    else:
+        epoch_time = str(int(mktime(dt.timetuple())))
+    return epoch_time + "000"
 
 def get(apikey=None, action=None, version='2',
         url=None, **kwargs):

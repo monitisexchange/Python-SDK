@@ -134,7 +134,16 @@ class CustomMonitor(Monitis):
     def get_monitor_info(self):
         """Return the information for an existing CustomMonitor instance"""
         return get_monitor_info(monitor_id=self.monitor_id)
-
+    
+    def refresh(self):
+        '''Update the monitor with fresh data from the API
+        
+        This option is currently limited to getting the tag'''
+        # TODO complete the mapping of API params to class attributes
+        # and refresh all of them
+        monitor_info = self.get_monitor_info()
+        self.tag = monitor_info['tag']
+        
     @classmethod
     def fetch(cls, monitor_id=None, **kwargs):
         """Create a CustomMonitor instance based on get_monitor_info"""
@@ -341,6 +350,24 @@ class CustomMonitor(Monitis):
             raise MonitisError(
                 'delete_monitor error: ' + result['status'])
 
+    # @classmethod
+    # def add_result_and_monitor(
+    #     self, checktime=None, name, tag=None, result_params, **kwargs):
+    #     '''Add results as with add_result, but also create the named monitor if
+    #     none with that name exists.
+    # 
+    #         checktime - optional, the current time is used if none given
+    #         name - required, if it matches an existing name, that will be used
+    #         tag - required, used if creating a new monitor
+    #         result_params - list of one or more ResultParams for the monitor
+    #     
+    #     '''
+    #     # check to see if the monitor already exists
+    # 
+    #     # if not, create it
+    #     # in either case, we now have a handle to a monitor
+    #     # post the results to the monitor
+    #     pass
     
     def add_result(self, checktime=None, results=None, **kwargs):
         """add results for the specified Custom monitor
@@ -355,7 +382,7 @@ class CustomMonitor(Monitis):
         """
         action = 'addResult'
         # use the current time if the user didn't specify one
-        checktime = checktime or api_checktime()
+        result_checktime = checktime or api_checktime()
         
         # merge kwargs and results items into one list
         if results is None:
@@ -372,13 +399,13 @@ class CustomMonitor(Monitis):
             result_strings.append(quote(':'.join((name, str(value)))))
         
         result_string =  self.post(action=action, monitorId=self.monitor_id,
-                         checktime=checktime,
+                         checktime=result_checktime,
                          results=';'.join(result_strings))
         result = decode_json(result_string)
         if result['status'] != 'ok':
             raise MonitisError('add_result failed')
             
-        return checktime
+        return result_checktime
     
     def add_additional_results(self, checktime=None, results=None):
         """Add additional results to an existing result
