@@ -24,6 +24,15 @@ from awsmon.monitors import (
     parse_results, create_monitor, update_monitor, delete_monitor,
     list_monitors, print_monitors)
 
+def _monitor_name(prefix, instance, metric):
+    '''Generate a monitor name based on prefix, the instance name
+    and the metric name
+    '''
+    if prefix is '':
+        monitor_name = '.'.join((instance,metric))
+    else:
+        monitor_name = '.'.join((prefix,instance,metric))
+    return monitor_name
 
 def get_options(argv):
     '''Create an awsmon.Options to parse argv arguments'''
@@ -47,7 +56,11 @@ def print_catalog(opt):
 
 def create(opt, results):
     '''Create a new monitor, in part based on the structure of the results'''
-    monitor_name = '.'.join((opt.prefix, opt.instance_name, opt.metric_name))
+    # if metric_name was 'ALL' run create monitor for each metric
+    # if opt.metric_name is 'ALL':
+    #     metrics = 
+    monitor_name = _monitor_name(
+        opt.prefix, opt.instance_name, opt.metric_name)
     create_monitor(monitor_name, opt.aws_namespace, opt.statistics, results)
 
 def _list(opt):
@@ -61,7 +74,7 @@ def update(opt,results):
     '''Post the results to a Monitis monitor'''
     print "Using AWS data from {0} until {1}".format(
         opt.from_time, opt.until_time)
-    monitor_name = '.'.join((opt.prefix,opt.instance_name,opt.metric_name))
+    monitor_name = _monitor_name(opt.prefix,opt.instance_name,opt.metric_name)
     count = update_monitor(
         monitor_name, opt.aws_namespace, opt.statistics, results)
     print "Posted %s results to Monitis" % count
