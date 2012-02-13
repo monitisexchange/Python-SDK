@@ -13,6 +13,10 @@ setup(
         'parsedatetime',
         'boto'
     ],
+    install_requires = [
+        'parsedatetime',
+        'boto'
+    ],
     packages = [
         'monitis',
         'monitis.monitors',
