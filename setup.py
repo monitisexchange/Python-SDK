@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name = 'Monitis-SDK',
-    version = '1.0.1',
+    version = '1.0.2',
     description = 'Monitis API SDK',
     author = 'Jeremiah Shirk',
     author_email = 'jshirk@gmail.com',
