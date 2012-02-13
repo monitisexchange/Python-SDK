@@ -16,6 +16,7 @@ from monitis.api import Monitis, checktime
 from monitis.monitors.custom import CustomMonitor, get_monitors
 
 from awsmon.timeutil import parse_date, epoch_to_datetime, timestamp_to_epoch
+from awsmon.options import Usage
 
 def parse_results(statistics, results):
     '''Take a list of results from get_metric_statistics and return a list
@@ -77,7 +78,12 @@ def update_monitor(name,aws_namespace,statistics,results):
     monitors = [mon for mon in list_monitors(aws_namespace) 
         if name == mon.get_monitor_info()['name']]
     # TODO handle case where len(monitors) != 1
-    monitor = monitors[0]
+    if len(monitors) < 1:
+        raise Usage("No matching monitors found")
+    elif len(monitors) > 1:
+        raise Usage("More than one monitor found with name %s") % name
+    else:
+        monitor = monitors[0]
     # post all of the results we found
     for result in results:
         result_checktime = checktime(result['Timestamp'])
