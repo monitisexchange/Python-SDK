@@ -4,11 +4,15 @@ from distutils.core import setup
 
 setup(
     name = 'Monitis-SDK',
-    version = '1.0',
+    version = '1.0.1',
     description = 'Monitis API SDK',
     author = 'Jeremiah Shirk',
     author_email = 'jshirk@gmail.com',
     url = 'https://github.com/monitisexchange/Python-SDK',
+    requires = [
+        'parsedatetime',
+        'boto'
+    ],
     packages = [
         'monitis',
         'monitis.monitors',
