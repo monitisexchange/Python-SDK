@@ -15,12 +15,13 @@ from boto.exception import BotoServerError
 
 from monitis.api import MonitisError
 
-from awsmon.options import Options, Usage
-from awsmon.timeutil import parse_date, epoch_to_datetime, timestamp_to_epoch
-from awsmon.aws import (
+from monitis.tools.awsmon.options import Options, Usage
+from monitis.tools.awsmon.timeutil import (
+    parse_date, epoch_to_datetime, timestamp_to_epoch)
+from monitis.tools.awsmon.aws import (
     connect_to_cloudwatch, get_instance_name, metrics_catalog, 
     available_metrics, dimensions)
-from awsmon.monitors import (
+from monitis.tools.awsmon.monitors import (
     parse_results, create_monitor, update_monitor, delete_monitor,
     list_monitors, print_monitors)
 

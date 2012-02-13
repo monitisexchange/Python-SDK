@@ -15,8 +15,9 @@ from monitis.monitors.params import DataType, ResultParams
 from monitis.api import Monitis, checktime
 from monitis.monitors.custom import CustomMonitor, get_monitors
 
-from awsmon.timeutil import parse_date, epoch_to_datetime, timestamp_to_epoch
-from awsmon.options import Usage
+from monitis.tools.awsmon.timeutil import (
+    parse_date, epoch_to_datetime, timestamp_to_epoch)
+from monitis.tools.awsmon.options import Usage
 
 def parse_results(statistics, results):
     '''Take a list of results from get_metric_statistics and return a list

@@ -15,7 +15,8 @@ import parsedatetime.parsedatetime_consts as pdc
 from time import mktime
 
 from monitis.api import Monitis
-from awsmon.timeutil import parse_date, epoch_to_datetime, timestamp_to_epoch
+from monitis.tools.awsmon.timeutil import (
+    parse_date, epoch_to_datetime, timestamp_to_epoch)
 
 help_message = '''
 monitis_cloudwatch.py  -- record AWS CloudWatch metrics in Monitis
