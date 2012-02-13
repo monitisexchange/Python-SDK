@@ -123,6 +123,7 @@ class Options:
         self.print_catalog = False
         self.aws_namespace = None
         self.metric_name = None
+        self.all_metrics = False
         self.monitor_name = None
         self.monitor_id = None
         # period for GetMetricStatistics API call
@@ -184,6 +185,8 @@ class Options:
                     self.aws_namespace = 'AWS/RDS'
                 if option in ("--metric"):
                     self.metric_name = value
+                    if value is 'ALL':
+                        self.all_metrics = True
                 if option in ("--name"):
                     self.monitor_name = value
                 if option in ("--id"):
@@ -237,7 +240,11 @@ class Options:
             if self.from_time is None:
                 self.from_time = self.until_time - timedelta(hours=1)
             # TODO error handling for missing/incompatible options
-
+            
+            # if no statistic options were selected, select all of them
+            if not self.statistics:
+                self.statistics = [
+                    'Average', 'Sum', 'SampleCount', 'Maximum', 'Minimum' ]
         except Usage, err:
             print >> sys.stderr, \
                 sys.argv[0].split("/")[-1] + ": " + str(err.msg)
