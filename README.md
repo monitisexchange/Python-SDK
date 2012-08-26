@@ -19,3 +19,38 @@ https://www.monitis.com/free_signup.jsp
     cm = CustomMonitor.add_monitor(rp, name='1 Min. Load', tag='load')
     load1m,load5m,load15m = getloadavg()
     print cm.add_result(results={'1m':load1m})
+
+Running Tests
+-----------------------------
+To run the tests, you will need nose installed
+
+        $ pip install nose
+
+Once that's done, simply run nosetests in the root of the project.
+
+        $ nosetests
+
+Monitis API
+-----------------------------
+The Monitis API is documented at <http://monitis.com/api/api.html>. The 
+Python SDK currently covers the following components of the API.
+
+### Included in Python SDK
+- API calls with checksum validation
+- Custom Monitors
+
+### Included in future implementation of SDK
+- Auth token validation
+- Custom monitor agents
+- Users
+- Subaccounts
+- Layout
+- Contacts
+- Notifications
+- Predefined monitors
+    - External
+    - Internal
+    - Transaction
+    - Full page load
+    - Visitor tracker
+    - Cloud instances
