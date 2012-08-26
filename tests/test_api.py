@@ -6,7 +6,7 @@ from nose.tools import *
 
 from monitis.api import get, resolve_apikey, resolve_secretkey, Monitis
 from monitis.api import MonitisError, timestamp, checktime, decode_json
-from monitis.api import environ_key
+from monitis.api import environ_key, checksum, post
 
 
 class TestMonitisApi:
@@ -35,6 +35,11 @@ class TestMonitisApi:
         assert_equal(self.mon.checksum(secretkey='notReallyASecret',
                                        key2="foo", key1="bar"),
                           "ML1TdJ/wQc06CdIREtddB19wsKM=")
+        assert_equal(checksum(secretkey='notReallyASecret',
+                                       key2="foo", key1="bar"),
+                          "ML1TdJ/wQc06CdIREtddB19wsKM=")
+
+
     
     def test_checktime(self):
         # delta between checktime and the current time should be < 5 sec
@@ -79,6 +84,13 @@ class TestMonitisApi:
         # test of the API post method is covered by test_custom.test_add_result
         try:
             self.mon.post(action='noSuchAction')
+        except MonitisError, error:
+            assert_equal(str(error.msg), 
+                'API Error: ' +
+                '{"status":"Action \'noSuchAction\' is not supported"}')
+                # test of the API post method is covered by test_custom.test_add_result
+        try:
+            post(action='noSuchAction')
         except MonitisError, error:
             assert_equal(str(error.msg), 
                 'API Error: ' +

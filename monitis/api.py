@@ -134,8 +134,25 @@ def checktime(dt=None):
     return epoch_time + "000"
 
 
-def get(apikey=None, action=None, version='2',
-        url=None, **kwargs):
+# TODO remove redundant checksum call in Monitis class
+def checksum(**kwargs):
+    """Base64-encoded HMAC signature of the parameters string
+
+    The checksum is caclulated as documented at:
+        http://monitis.com/api/api.html#checkSum
+    """
+
+    # remove secretkey from kwargs, lookup if missing
+    secretkey = kwargs.pop('secretkey', resolve_secretkey())
+
+    # sort the args, and concatenate them
+    param_string = ''.join([''.join([str(x), str(y)])
+                            for x, y in sorted(kwargs.items())])
+
+    return b64encode(str(new_hmac(secretkey, param_string, sha1).digest()))
+
+
+def get(apikey=None, action=None, version='2', url=None, **kwargs):
     """GET requests to the Monitis API
 
     Returns Python objects based on the JSON-encoded responses
@@ -173,6 +190,49 @@ def get(apikey=None, action=None, version='2',
 
     # build a python object out of the result
     return decode_json(res_json)
+
+
+def post(apikey=None, secretkey=None, action=None, version=2,
+         url=None, **kwargs):
+    ''' Non-OO POST to Monitis API
+
+    Pass in POST args as kwargs
+    '''
+
+    apikey = apikey or resolve_apikey()
+    secretkey = secretkey or resolve_secretkey()
+    url = url or _api_url()
+    output = 'JSON'
+
+    if not action:
+        raise MonitisError("post: action is required")
+
+    post_args = deepcopy(kwargs)
+    post_args['apikey'] = apikey
+    post_args['action'] = action
+    post_args['version'] = version
+    post_args['timestamp'] = timestamp()
+
+    # calculate a checksum based on the values and secret key
+    post_checksum = checksum(secretkey=secretkey, **post_args)
+
+    # use urllib to post the values
+    post_args['checksum'] = post_checksum
+
+    post_params = urlencode(post_args)
+
+    try:
+        if Monitis.debug is True:
+            print "Request URL: " + url
+            print "Request params: " + str(post_args)
+        result = urlopen(url, post_params)
+    except HTTPError, error:
+        raise MonitisError('API Error: ' + error.read())
+    ret = result.read()
+    if Monitis.debug is True:
+        print "Response: " + ret
+    result.close()
+    return ret
 
 
 class Monitis:
