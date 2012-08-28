@@ -218,7 +218,6 @@ def post(apikey=None, secretkey=None, action=None, version=2,
 
     # use urllib to post the values
     post_args['checksum'] = post_checksum
-
     post_params = urlencode(post_args)
 
     try:
@@ -232,7 +231,7 @@ def post(apikey=None, secretkey=None, action=None, version=2,
     if Monitis.debug is True:
         print "Response: " + ret
     result.close()
-    return ret
+    return decode_json(ret)
 
 
 class Monitis:
