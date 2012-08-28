@@ -26,6 +26,14 @@ To run the tests, you will need nose installed
 
         $ pip install nose
 
+Some of the tests require environment variables to be set, for API
+authentication.
+
+        $ export MONITIS_APIKEY='your API key'
+        $ export MONITIS_SECRETKEY='your secretkey'
+        $ export MONITIS_USER='username@yourdomain.com'
+        $ export MONITIS_PASS='monitis password'
+
 Once that's done, simply run nosetests in the root of the project.
 
         $ nosetests
@@ -38,12 +46,12 @@ Python SDK currently covers the following components of the API.
 ### Included in Python SDK
 - API calls with checksum validation
 - Custom Monitors
+- Users
+- Subaccounts
 
 ### Included in future implementation of SDK
 - Auth token validation
 - Custom monitor agents
-- Users
-- Subaccounts
 - Layout
 - Contacts
 - Notifications
