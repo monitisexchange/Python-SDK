@@ -9,7 +9,7 @@ from monitis.monitors.params import ResultParams, DataType
 from monitis.monitors.custom import CustomMonitor
 
 
-class TestUserApi:
+class TestLayoutApi:
 
     def setUp(self):
         Monitis.sandbox = False
