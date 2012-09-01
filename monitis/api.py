@@ -58,6 +58,33 @@ def decode_json(json=None):
         raise MonitisError(': '.join(['JSON parse error', str(error)]))
 
 
+def validate_kwargs(required={}, optional={}, **kwargs):
+    ''' Ensure required kwargs are present, and map to camelCase
+
+    Arguments required and optional should each be a dict mapping from
+    names in the SDK format to names in the API format.  If both are
+    present, then take the value from the API format argument.
+
+    Include any unexpected kwargs in the result
+    '''
+    result_kwargs = {}
+    for lc, cc in required.items():
+        value =  kwargs.pop(lc, None) or kwargs.pop(cc, None)
+        if value is None:
+            raise MonitisError(lc + " is required")
+        else:
+            result_kwargs[cc] = value
+
+    for lc, cc in optional.items():
+        value =  kwargs.pop(lc, None) or kwargs.pop(cc, None)
+        if value is not None:
+            result_kwargs[cc] = value
+
+    # include any kwargs not removed by pop, i.e. not in required or optional
+    result_kwargs.update(kwargs)
+    return result_kwargs
+
+
 def resolve_apikey():
     '''Resolve the Monitis API key outside of a Monitis instance'''
     # check the class variable
