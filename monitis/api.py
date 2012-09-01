@@ -69,14 +69,18 @@ def validate_kwargs(required={}, optional={}, **kwargs):
     '''
     result_kwargs = {}
     for lc, cc in required.items():
-        value =  kwargs.pop(lc, None) or kwargs.pop(cc, None)
+        value =  kwargs.pop(lc, None)
+        if value is None:
+            value = kwargs.pop(cc, None)
         if value is None:
             raise MonitisError(lc + " is required")
         else:
             result_kwargs[cc] = value
 
     for lc, cc in optional.items():
-        value =  kwargs.pop(lc, None) or kwargs.pop(cc, None)
+        value =  kwargs.pop(lc, None)
+        if value is None:
+            value = kwargs.pop(cc, None)
         if value is not None:
             result_kwargs[cc] = value
 
