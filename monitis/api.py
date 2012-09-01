@@ -208,7 +208,7 @@ def get(apikey=None, action=None, version='2', url=None, **kwargs):
     req_url = url + '?' + urlencode(req_params)
 
     # make the request
-    if Monitis.debug is True:
+    if Monitis.debug:
         print "Request URL: " + req_url
     req = Request(req_url)
     try:
@@ -216,7 +216,7 @@ def get(apikey=None, action=None, version='2', url=None, **kwargs):
     except HTTPError, error:
         raise MonitisError('API Error: ' + error.read())
     res_json = res.read()
-    if Monitis.debug is True:
+    if Monitis.debug:
         print "Response: " + res_json
 
     # build a python object out of the result
