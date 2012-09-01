@@ -49,11 +49,11 @@ Python SDK currently covers the following components of the API.
 - Users
 - Subaccounts
 - Layout
+- Contacts
 
 ### Included in future implementation of SDK
 - Auth token validation
 - Custom monitor agents
-- Contacts
 - Notifications
 - Predefined monitors
     - External
