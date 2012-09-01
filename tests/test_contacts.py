@@ -10,12 +10,12 @@ class TestContactsApi:
 
     def setUp(self):
         test_contact = \
-            monitis.contacts.add_contact(first_name='J',
-                                         last_name='S',
+            monitis.contacts.add_contact(first_name='Test',
+                                         last_name='User',
                                          account='test949r43@test.com',
                                          contact_type=1,
                                          timezone=-300,
-                                         group='TestGroup2')
+                                         group='TestGroupr43r43f')
         self.test_id = test_contact['data']['contactId']
         self.test_key = test_contact['data']['confirmationKey']
 
