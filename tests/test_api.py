@@ -12,7 +12,7 @@ from monitis.api import environ_key, checksum, post
 class TestMonitisApi:
     def setUp(self):
         self.mon = Monitis()
-        Monitis.sandbox = True
+        # Monitis.sandbox = True
     
     def test_environ_key(self):
         env_key = environ_key("HOME")
