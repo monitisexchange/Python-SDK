@@ -30,11 +30,23 @@ def add_notification_rule(**kwargs):
                 'param_value': 'paramValue',
                 'comparing_method': 'comparingMethod'}
 
-    # paramName and paramValue are required when monitorType is custom
-    # comparingMethod is required when paramName and paramValue are present
-    # either contact_group or contact_id must be specified
-
     post_args = validate_kwargs(required, optional, **kwargs)
+
+    # paramName and paramValue are required when monitorType is custom
+    if post_args.get('monitorType', None) is 'custom':
+        if not (post_args.has_key('paramName') \
+            and post_args.has_key('paramValue')):
+            raise MonitisError('paramName and paramValue are required')
+    # comparingMethod is required when paramName and paramValue are present
+    if post_args.has_key('paramName') or post_args.has_key('paramValue'):
+        if not post_args.has_key('comparingMethod'):
+            raise MonitisError('comparingMethod is required')
+
+    # either contact_group or contact_id must be specified
+    if not (post_args.has_key('contactGroup') \
+        or post_args.has_key('contactId')):
+        raise MonitisError('Either contactName or contactGroup is required')
+
     return post(action='addNotificationRule', **post_args)
 
 
