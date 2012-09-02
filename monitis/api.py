@@ -183,14 +183,13 @@ def checksum(**kwargs):
     return b64encode(str(new_hmac(secretkey, param_string, sha1).digest()))
 
 
-def get(apikey=None, action=None, version='2', url=None, **kwargs):
+def get(apikey=None, action=None, version='2', _url=None, **kwargs):
     """GET requests to the Monitis API
 
     Returns Python objects based on the JSON-encoded responses
     """
 
-    if url is None:
-        url = _api_url()
+    url = _url or _api_url()
 
     output = 'JSON'  # don't allow XML, so we can parse JSON response
     apikey = apikey or resolve_apikey()
@@ -224,7 +223,7 @@ def get(apikey=None, action=None, version='2', url=None, **kwargs):
 
 
 def post(apikey=None, secretkey=None, action=None, version=2,
-         url=None, **kwargs):
+         _url=None, **kwargs):
     ''' Non-OO POST to Monitis API
 
     Pass in POST args as kwargs
@@ -232,7 +231,7 @@ def post(apikey=None, secretkey=None, action=None, version=2,
 
     apikey = apikey or resolve_apikey()
     secretkey = secretkey or resolve_secretkey()
-    url = url or _api_url()
+    url = _url or _api_url()
     output = 'JSON'
 
     if not action:
@@ -329,11 +328,11 @@ class Monitis:
         # if we got this far, the secret key wasn't found
         raise MonitisError('The Monitis secret key is required')
 
-    def __init__(self, apikey=None, secretkey=None, url=None,
+    def __init__(self, apikey=None, secretkey=None, _url=None,
                  version=None, validation=None):
         '''Create a new Monitis object'''
         self.auth_token = None
-        self.url = url or _api_url()
+        self.url = _url or _api_url()
         self.apikey = apikey or resolve_apikey()
         self.secretkey = secretkey or resolve_secretkey()
         self.validation = validation or 'HMACSHA1'

@@ -28,7 +28,7 @@ def _api_url():
 # Custom Monitor API uses a different HTTP endpoint from the rest of the API
 def _custom_get(**kwargs):
     '''HTTP GET using URL for customMonitor API'''
-    return get(url=_api_url(), **kwargs)
+    return get(_url=_api_url(), **kwargs)
 
 def get_monitors(tag=None, m_type=None):
     """Return a list of CustomMontior instances that match the tag and m_type
@@ -116,10 +116,10 @@ class CustomMonitor(Monitis):
     default_url = 'http://monitis.com/customMonitorApi'
     sandbox_url = 'http://sandbox.monitis.com/customMonitorApi'
     
-    def __init__(self, apikey=None, secretkey=None, url=None,
+    def __init__(self, apikey=None, secretkey=None, _url=None,
                  version=None, validation=None,
                  monitor_id=None, name=None, m_type=None, tag=None):
-        customurl = url or _api_url()
+        customurl = _url or _api_url()
         self.monitor_id = monitor_id
         self.name = name
         self.m_type = m_type
@@ -128,7 +128,7 @@ class CustomMonitor(Monitis):
         # if monitor_id is None:
         #     raise MonitisError("monitor_id is required")
         Monitis.__init__(self, apikey=apikey, secretkey=secretkey,
-                         url=customurl, version=version,
+                         _url=customurl, version=version,
                          validation=validation)
 
     def get_monitor_info(self):
@@ -265,7 +265,7 @@ class CustomMonitor(Monitis):
 
         # Create a mostly empty CustomMonitor, and then populate it
         # once we've successfully created it on the server
-        mon = cls(url=_api_url())
+        mon = cls(_url=_api_url())
         json_result = mon.post(**add)
         result = decode_json(json_result)
 
