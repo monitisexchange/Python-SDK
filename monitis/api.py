@@ -187,9 +187,12 @@ def get(apikey=None, action=None, version='2', _url=None, **kwargs):
     """GET requests to the Monitis API
 
     Returns Python objects based on the JSON-encoded responses
+
+    If _raw=True is passed in, then the raw HTTP Response will be returned
     """
 
     url = _url or _api_url()
+    _raw = kwargs.pop('_raw', False) # remove _raw kwarg, default to False
 
     output = 'JSON'  # don't allow XML, so we can parse JSON response
     apikey = apikey or resolve_apikey()
@@ -214,6 +217,8 @@ def get(apikey=None, action=None, version='2', _url=None, **kwargs):
         res = urlopen(req)
     except HTTPError, error:
         raise MonitisError('API Error: ' + error.read())
+    if _raw:
+        return res
     res_json = res.read()
     if Monitis.debug:
         print "Response: " + res_json
@@ -227,12 +232,15 @@ def post(apikey=None, secretkey=None, action=None, version=2,
     ''' Non-OO POST to Monitis API
 
     Pass in POST args as kwargs
+    If _raw=True is passed in, then the raw HTTP Response will be returned
     '''
 
     apikey = apikey or resolve_apikey()
     secretkey = secretkey or resolve_secretkey()
     url = _url or _api_url()
     output = 'JSON'
+
+    _raw = kwargs.pop('_raw', False) # remove _raw kwarg, default to False
 
     if not action:
         raise MonitisError("post: action is required")
@@ -257,6 +265,8 @@ def post(apikey=None, secretkey=None, action=None, version=2,
         result = urlopen(url, post_params)
     except HTTPError, error:
         raise MonitisError('API Error: ' + error.read())
+    if _raw:
+        return result
     ret = result.read()
     if Monitis.debug is True:
         print "Response: " + ret
