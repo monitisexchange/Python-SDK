@@ -4,7 +4,7 @@ from binascii import b2a_hex
 from os import urandom
 
 from monitis.api import Monitis, get, post
-import monitis.predefined.external as external
+import monitis.monitors.predefined.external as external
 
 
 class TestExternalMonitorApi:
