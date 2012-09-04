@@ -52,3 +52,52 @@ def delete_internal_monitors(**kwargs):
 
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='deleteInternalMonitors', **req_args)
+
+
+def agent_monitors(**kwargs):
+    ''' Helper function to get agent monitors
+
+    This function does not directly map to any specific action in the
+    Monitis API.  Rather, it is a helper, and requires that the calling
+    function supply the action, in addition to the agent ID.
+    '''
+    required = {'agent_id': 'agentId', 'action': 'action'}
+    optional = {}
+
+    req_args = validate_kwargs(required, optional, **kwargs)
+
+    return get(**req_args)
+
+
+def internal_info(**kwargs):
+    ''' Helper function to get info for internal monitors
+
+    This function does not directly map to any specific action in the
+    Monitis API.  Rather, it is a helper, and requires that the calling
+    function supply the action, in addition to the agent ID.
+    '''
+    required = {'monitor_id': 'monitorId', 'action': 'action'}
+    optional = {}
+
+    req_args = validate_kwargs(required, optional, **kwargs)
+
+    return get(**req_args)
+
+
+def internal_result(**kwargs):
+    ''' Helper function to get results for internal monitors
+
+    This function does not directly map to any specific action in the
+    Monitis API.  Rather, it is a helper, and requires that the calling
+    function supply the action, in addition to the agent ID.
+    '''
+    required = {'monitor_id': 'monitorId',
+                'day': 'day',
+                'month': 'month',
+                'year': 'year',
+                'action': 'action'}
+    optional = {'timezone': 'timezone'}
+
+    req_args = validate_kwargs(required, optional, **kwargs)
+
+    return get(**req_args)
