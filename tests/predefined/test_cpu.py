@@ -9,7 +9,6 @@ import monitis.monitors.predefined.internal.agent as agent
 import monitis.monitors.predefined.internal.cpu as cpu
 
 
-
 class TestCPUMonitor:
 
     def setUp(self):
@@ -43,7 +42,6 @@ class TestCPUMonitor:
         else:
             self.agent_id = None
 
-
     def tearDown(self):
         if self.agent_id:
             cpu.delete_cpu_monitors(test_ids=self.test_id)
@@ -68,7 +66,6 @@ class TestCPUMonitor:
             }
             res = cpu.edit_cpu_monitor(**args)
             assert_equal(res['status'], 'ok')
-
 
     def test_agent_cpu(self):
         res = cpu.agent_cpu(agent_id=self.agent_id)

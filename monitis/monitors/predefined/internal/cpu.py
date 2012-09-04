@@ -10,6 +10,7 @@ Copyright (c) 2012 Monitis. All rights reserved.
 from monitis.api import get, post, MonitisError, validate_kwargs
 from monitis.monitors.predefined.internal import delete_internal_monitors
 
+
 def add_cpu_monitor(**kwargs):
     ''' Add a CPU monitor '''
     required = {'agentkey': 'agentkey',
