@@ -44,7 +44,7 @@ class TestProcessApi:
         if self.agent_id:
             process.delete_process_monitors(test_ids=self.test_id)
 
-    def test_edit_load_average_monitor(self):
+    def test_edit_process_monitor(self):
         args = {
             'test_id': self.test_id,
             'name': self.temp_str,
