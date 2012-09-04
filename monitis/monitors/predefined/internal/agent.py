@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-internal.py
+agent.py
 
 Created by Jeremiah Shirk on 2012-09-02.
 Copyright (c) 2012 Monitis. All rights reserved.
