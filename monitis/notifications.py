@@ -55,8 +55,9 @@ def delete_notification_rule(**kwargs):
     required = {'contact_ids': 'contactIds',
                 'monitor_id': 'monitorId',
                 'monitor_type': 'monitorType'}
+    optional = {}
 
-    post_args = validate_kwargs(required, **kwargs)
+    post_args = validate_kwargs(required, optional, **kwargs)
 
     # replace list with comma-separated string
     contact_ids = post_args['contactIds']
@@ -70,6 +71,7 @@ def get_notification_rules(**kwargs):
     ''' '''
     required = {'monitor_id': 'monitorId',
                 'monitor_type': 'monitorType'}
+    optional = {}
 
-    get_args = validate_kwargs(required, **kwargs)
+    get_args = validate_kwargs(required, optional, **kwargs)
     return get(action='getNotificationRules', **get_args)

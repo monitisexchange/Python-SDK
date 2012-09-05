@@ -73,22 +73,25 @@ def confirm_contact(**kwargs):
     ''' Confirm the specified contact '''
     required = {'contact_id': 'contactId',
                 'confirmation_key': 'confirmationKey'}
+    optional = {}
 
-    post_args = validate_kwargs(required=required, **kwargs)
+    post_args = validate_kwargs(required, optional, **kwargs)
     return post(action='confirmContact', **post_args)
 
 
 def contact_activate(**kwargs):
     ''' Activate the specified contact '''
     required = {'contact_id': 'contactId'}
-    post_args = validate_kwargs(required=required, **kwargs)
+    optional = {}
+    post_args = validate_kwargs(required, optional, **kwargs)
     return post(action='contactActivate', **post_args)
 
 
 def contact_deactivate(**kwargs):
     ''' Deactivate the specified contact '''
     required = {'contact_id': 'contactId'}
-    post_args = validate_kwargs(required=required, **kwargs)
+    optional = {}
+    post_args = validate_kwargs(required, optional, **kwargs)
     return post(action='contactDeactivate', **post_args)
 
 
@@ -106,8 +109,9 @@ def get_recent_alerts(**kwargs):
     ''' Get recent alerts history
 
     Start date and end date are in miliseconds since the Epoch'''
+    required = {}
     optional = {'timezone': 'timezone',
                 'start_date': 'startDate',
                 'end_date': 'endDate'}
-    post_args = validate_kwargs(optional=optional, **kwargs)
+    post_args = validate_kwargs(required, optional, **kwargs)
     return get(action='recentAlerts', **post_args)

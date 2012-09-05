@@ -58,7 +58,7 @@ def decode_json(json=None):
         raise MonitisError(': '.join(['JSON parse error', str(error)]))
 
 
-def validate_kwargs(required={}, optional={}, **kwargs):
+def validate_kwargs(required, optional, **kwargs):
     ''' Ensure required kwargs are present, and map to camelCase
 
     Arguments required and optional should each be a dict mapping from
