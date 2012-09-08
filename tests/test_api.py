@@ -6,7 +6,7 @@ from nose.tools import *
 
 from monitis.api import get, resolve_apikey, resolve_secretkey, Monitis
 from monitis.api import MonitisError, timestamp, checktime, decode_json
-from monitis.api import environ_key, checksum, post
+from monitis.api import environ_key, checksum, post, camel2under
 
 
 class TestMonitisApi:
@@ -39,7 +39,13 @@ class TestMonitisApi:
                                        key2="foo", key1="bar"),
                           "ML1TdJ/wQc06CdIREtddB19wsKM=")
 
-
+    def test_camel2under(self):
+        words = {'test_word': 'testWord',
+                 'uptime_sla': 'uptimeSLA',
+                 'initial_caps_here': 'InitialCapsHere',
+                 'this_would_be_weird': 'THIsWOULdBeWEIRD'}
+        for converted, word in words.items():
+            assert_equal(converted, camel2under(word))
     
     def test_checktime(self):
         # delta between checktime and the current time should be < 5 sec

@@ -49,6 +49,16 @@ def _api_url():
     else:
         return Monitis.default_url
 
+def camel2under(word):
+    ''' Translate camelCase strings to underscore delimited compound words '''
+    result_list = []
+    for i in range(len(word)-1):
+        result_list.append(word[i])
+        if word[i].islower() and word[i+1].isupper():
+            result_list.append('_')
+    result_list.append(word[-1])
+    return ''.join(result_list).lower()
+
 
 def decode_json(json=None):
     '''Deserialize json to a python object.'''
@@ -65,8 +75,26 @@ def validate_kwargs(required, optional, **kwargs):
     names in the SDK format to names in the API format.  If both are
     present, then take the value from the API format argument.
 
+    Alternatively, required and optional can be lists of camelCase
+    identifiers in the format used by the native API.  Then, identifiers
+    in the SDK underscore_delimited format will also be accepted.
+
     Include any unexpected kwargs in the result
     '''
+    # turn required list into dict
+    temp_required = {}
+    temp_optional = {}
+    if isinstance(required, list):
+        for word in required:
+            temp_required[camel2under(word)] = word
+        required = temp_required
+
+    # turn optional list into dict
+    if isinstance(optional, list):
+        for word in required:
+            temp_optional[camel2under(word)] = word
+        optional = temp_optional
+
     result_kwargs = {}
     for lc, cc in required.items():
         value =  kwargs.pop(lc, None)
