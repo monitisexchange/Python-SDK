@@ -10,7 +10,7 @@ Copyright (c) 2011 Monitis. All rights reserved.
 from urllib import quote
 from json import dumps
 
-from monitis.api import Monitis, MonitisError, get, decode_json
+from monitis.api import Monitis, MonitisError, get, post, decode_json
 from monitis.api import checktime as api_checktime
 from monitis.monitors.params import MonitorParams, ResultParams
 from monitis.monitors.params import AdditionalResultParams
@@ -29,6 +29,14 @@ def _api_url():
 def _custom_get(**kwargs):
     '''HTTP GET using URL for customMonitor API'''
     return get(_url=_api_url(), **kwargs)
+
+custom_get = _custom_get
+
+def _custom_post(**kwargs):
+    ''' HTTP POST with URL for custom API'''
+    return post(_url=_api_url(), **kwargs)
+
+custom_post = _custom_post
 
 def get_monitors(tag=None, m_type=None):
     """Return a list of CustomMontior instances that match the tag and m_type
