@@ -47,7 +47,7 @@ def delete_contact(**kwargs):
     req_args = validate_kwargs(required, optional, **kwargs)
 
     valid_args = bool(req_args['contactId'] or 
-                     (req_args['contactType'] and req_args['account']))
+                         (req_args['contactType'] and req_args['account']))
 
     if not valid_args:
         raise MonitisError('Contact ID or Contact Type and Account required')
