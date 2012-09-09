@@ -37,20 +37,22 @@ def edit_contact(**kwargs):
     return post(action='editContact', **post_args)
 
 
-def delete_contact(contact_id=None, contact_type=None, account=None):
+def delete_contact(**kwargs):
     ''' Delete a contact
 
     Required fields: contactId, or contactType AND account
     '''
-    if not (contact_id or (contact_type and account)):
+    required = []
+    optional = ['contactId', 'contactType', 'account']
+    req_args = validate_kwargs(required, optional, **kwargs)
+
+    valid_args = bool(req_args['contactId'] or 
+                     (req_args['contactType'] and req_args['account']))
+
+    if not valid_args:
         raise MonitisError('Contact ID or Contact Type and Account required')
 
-    if contact_id:
-        return post(action='deleteContact', contactId=contact_id)
-    else:
-        return post(action='deleteContact', contactType=contact_type,
-                    account=account)
-
+    post(action='deleteContact', **req_args)
 
 def confirm_contact(**kwargs):
     ''' Confirm the specified contact '''
