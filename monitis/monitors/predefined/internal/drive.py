@@ -10,30 +10,23 @@ Copyright (c) 2012 Monitis. All rights reserved.
 from monitis.api import get, post, MonitisError, validate_kwargs
 import monitis.monitors.predefined.internal as internal
 
-
-common_required = {
-    'free_limit': 'freeLimit',
-    'name': 'name',
-    'tag': 'tag'
-}
+common_required = ['freeLimit', 'name', 'tag']
 
 
 def add_drive_monitor(**kwargs):
     ''' Add a new internal drive monitor '''
-    required = {'agentkey': 'agentkey', 'drive_letter': 'driveLetter'}
-    required.update(common_required)
-    optional = {}
-
+    required = ['agentkey', 'driveLetter']
+    required.extend(common_required)
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='addDriveMonitor', **req_args)
 
 
 def edit_drive_monitor(**kwargs):
     ''' Edit the specified drive monitor '''
-    required = {'test_id': 'testId'}
-    required.update(common_required)
-    optional = {}
-
+    required = ['testId']
+    required.extend(common_required)
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='editDriveMonitor', **req_args)
 

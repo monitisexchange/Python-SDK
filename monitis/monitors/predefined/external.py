@@ -12,27 +12,10 @@ from monitis.api import get, post, MonitisError, validate_kwargs
 
 def add_external_monitor(**kwargs):
     ''' add a new External monitor '''
-    required = {
-        'type': 'type',
-        'name': 'name',
-        'url': 'url',
-        'interval': 'interval',
-        'location_ids': 'locationIds',
-        'tag': 'tag'
-    }
-    optional = {
-        'detailed_test_type': 'detailedTestType',
-        'timeout': 'timeout',
-        'over_ssl': 'overSSL',
-        'post_data': 'postData',
-        'content_match_flag': 'contentMatchFlag',
-        'conent_match_string': 'contentMatchString',
-        'params': 'params', # required for DNS and MySQL
-        'uptime_sla': 'uptimeSLA',
-        'response_sla': 'responseSLA',
-        'basic_auth_user': 'basicAuthUser',
-        'basic_auth_pass': 'basicAuthPass'
-    }
+    required = ['type', 'name', 'url', 'interval', 'locationIds', 'tag']
+    optional = ['detailedTestType', 'timeout', 'overSSL', 'postData',
+                'contentMatchFlag', 'contentMatchString', 'params',
+                'uptimeSLA', 'responseSLA', 'basicAuthUser', 'basicAuthPass']
     req_args = validate_kwargs(required, optional, **kwargs)
 
     # params required only for DNS and MySQL
@@ -51,20 +34,10 @@ def add_external_monitor(**kwargs):
 
 def edit_external_monitor(**kwargs):
     ''' Edit an external monitor '''
-    required = {
-        'test_id': 'testId',
-        'name': 'name',
-        'url': 'url',
-        'location_ids': 'locationIds',
-        'timeout': 'timeout', # Is timeout really required? Optional in *add*
-        'tag': 'tag'
-    }
-    optional = {
-        'conent_match_string': 'contentMatchString',
-        'max_value': 'maxValue', # doesn't even exist in *add*
-        'uptime_sla': 'uptimeSLA',
-        'response_sla': 'responseSLA'
-    }
+    required = ['testId', 'name', 'url', 'locationIds', 'timeout', 'tag']
+    optional = [
+        'contentMatchString', 'maxValue', 'uptimeSLA', 'responseSLA'
+    ]
     req_args = validate_kwargs(required, optional, **kwargs)
 
     # locationIds may be a list
@@ -77,8 +50,8 @@ def edit_external_monitor(**kwargs):
 
 def delete_external_monitor(**kwargs):
     ''' Delete one or more external monitors '''
-    required = {'test_ids': 'testIds'}
-    optional = {}
+    required = ['testIds']
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
 
     # if test_ids is a list, make a comma delimited string
@@ -90,8 +63,8 @@ def delete_external_monitor(**kwargs):
 
 def suspend_external_monitor(**kwargs):
     ''' Suspend an external monitor '''
-    required = {}
-    optional = {'monitor_ids': 'monitorIds', 'tag': 'tag'}
+    required = []
+    optional = ['monitorIds', 'tag']
     req_args = validate_kwargs(required, optional, **kwargs)
 
     # only one of monitor_ids and tag is required
@@ -108,8 +81,8 @@ def suspend_external_monitor(**kwargs):
 
 def activate_external_monitor(**kwargs):
     ''' Suspend an external monitor '''
-    required = {}
-    optional = {'monitor_ids': 'monitorIds', 'tag': 'tag'}
+    required = []
+    optional = ['monitorIds', 'tag']
     req_args = validate_kwargs(required, optional, **kwargs)
 
     # only one of monitor_ids and tag is required
@@ -126,40 +99,32 @@ def activate_external_monitor(**kwargs):
 
 def locations(**kwargs):
     ''' Get all of the locations for the user's external monitors '''
-    required = {}
-    optional = {}
+    required = []
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return get(action='locations', **req_args)
 
 
 def tests(**kwargs):
     ''' Get all external monitors for the user '''
-    required = {}
-    optional = {}
+    required = []
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return get(action='tests', **req_args)
 
 
 def testinfo(**kwargs):
     ''' Get information for the specified external monitor '''
-    required = {'test_id': 'testId'}
-    optional = {'timezone': 'timezone'}
+    required = ['testId']
+    optional = ['timezone']
     req_args = validate_kwargs(required, optional, **kwargs)
     return get(action='testinfo', **req_args)
 
 
 def testresult(**kwargs):
     ''' Get results of the specified External monitor '''
-    required = {
-        'test_id': 'testId',
-        'day': 'day',
-        'month': 'month',
-        'year': 'year'
-    }
-    optional = {
-        'location_ids': 'locationIds',
-        'timezone': 'timezone'
-    }
+    required = ['testId', 'day', 'month', 'year']
+    optional = ['locationIds', 'timezone']
     req_args = validate_kwargs(required, optional, **kwargs)
 
     # locationIds may be a list
@@ -172,8 +137,8 @@ def testresult(**kwargs):
 
 def tests_last_values(**kwargs):
     ''' Get the last results of a user's external monitors '''
-    required = {}
-    optional = {'location_ids': 'locationIds'}
+    required = []
+    optional = ['locationIds']
     req_args = validate_kwargs(required, optional, **kwargs)
 
     # locationIds may be a list
@@ -186,16 +151,16 @@ def tests_last_values(**kwargs):
 
 def tags(**kwargs):
     ''' Get all tags for the user's external monitors '''
-    required = {}
-    optional = {}
+    required = []
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return get(action='tags', **req_args)
 
 
 def tagtests(**kwargs):
     ''' Get external monitors for the specified tag '''
-    required = {'tag': 'tag'}
-    optional = {}
+    required = ['tag']
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return get(action='tagtests', **req_args)
 

@@ -10,42 +10,25 @@ Copyright (c) 2012 Monitis. All rights reserved.
 from monitis.api import get, post, MonitisError, validate_kwargs
 import monitis.monitors.predefined.internal as internal
 
-
-common_required = {
-    'platform': 'platform',
-    'name': 'name',
-    'tag': 'tag'
-}
+common_required = ['platform', 'name', 'tag']
 
 
 def add_memory_monitor(**kwargs):
     ''' Add a new internal memory monitor '''
-    required = {'agentkey': 'agentkey'}
-    required.update(common_required)
-    optional = {
-        'free_limit': 'freeLimit',
-        'free_swap_limit': 'freeSwapLimit',
-        'free_virtual_limit': 'freeVirtualLimit',
-        'buffered_limit': 'bufferedLimit',
-        'cached_limit': 'cachedLimit'
-    }
-
+    required = ['agentkey']
+    required.extend(common_required)
+    optional = ['freeLimit', 'freeSwapLimit', 'freeVirtualLimit',
+                'bufferedLimit', 'cachedLimit']
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='addMemoryMonitor', **req_args)
 
 
 def edit_memory_monitor(**kwargs):
     ''' Edit the specified memory monitor '''
-    required = {'test_id': 'testId'}
-    required.update(common_required)
-    optional = {
-        'free_limit': 'freeLimit',
-        'free_swap_limit': 'freeSwapLimit',
-        'free_virtual_limit': 'freeVirtualLimit',
-        'buffered_limit': 'bufferedLimit',
-        'cached_limit': 'cachedLimit'
-    }
-
+    required = ['testId']
+    required.extend(common_required)
+    optional = ['freeLimit', 'freeSwapLimit', 'freeVirtualLimit',
+                'bufferedLimit', 'cachedLimit']
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='editMemoryMonitor', **req_args)
 

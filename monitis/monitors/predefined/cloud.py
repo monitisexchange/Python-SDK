@@ -16,19 +16,15 @@ def cloud_instances(**kwargs):
     Parameters:
         timezoneoffset - offset relative to GMT, in minutes
     '''
-    required = {}
-    optional = {'timezoneoffset': 'timezoneoffset'}
-
+    required = []
+    optional = ['timezoneoffset']
     req_args = validate_kwargs(required, optional, **kwargs)
-
     return get(action='cloudInstances', **req_args)
 
 
 def cloud_instance_info(**kwargs):
     ''' Get information for the specified cloud instance '''
-    required = {'type': 'type', 'instance_id': 'instanceId'}
-    optional = {'timezoneoffset': 'timezoneoffset'}
-
+    required = ['type', 'instanceId']
+    optional = ['timezoneoffset']
     req_args = validate_kwargs(required, optional, **kwargs)
-
     return get(action='cloudInstanceInfo', **req_args)

@@ -11,39 +11,27 @@ from monitis.api import get, post, MonitisError, validate_kwargs
 import monitis.monitors.predefined.internal as internal
 
 
-common_required = {
-    'content_match_string': 'contentMatchString',
-    'http_method': 'httpMethod',
-    'pass_auth': 'passAuth',
-    'user_auth': 'userAuth',
-    'post_data': 'postData',
-    'timeout': 'timeout',
-    'name': 'name',
-    'tag': 'tag'
-}
+common_required = [
+    'contentMatchString', 'httpMethod', 'passAuth', 'userAuth', 'postData',
+    'timeout', 'name', 'tag'
+]
 
 
 def add_internal_http_monitor(**kwargs):
     ''' Add a new internal http monitor '''
-    required = {'user_agent_id': 'userAgentId',
-                'url': 'url',
-                'content_match_flag': 'contentMatchFlag',
-                'load_full': 'loadFull',
-                'over_ssl': 'overSSL',
-                'redirect': 'redirect'}
-    required.update(common_required)
-    optional = {}
-
+    required = ['userAgentId', 'url', 'contentMatchFlag', 'loadFull',
+                'overSSL', 'redirect']
+    required.extend(common_required)
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='addInternalHttpMonitor', **req_args)
 
 
 def edit_internal_http_monitor(**kwargs):
     ''' Edit the specified http monitor '''
-    required = {'test_id': 'testId', 'url_params': 'urlParams'}
-    required.update(common_required)
-    optional = {}
-
+    required = ['testId', 'urlParams']
+    required.extend(common_required)
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='editInternalHttpMonitor', **req_args)
 

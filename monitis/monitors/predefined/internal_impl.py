@@ -23,10 +23,8 @@ def internal_monitors(**kwargs):
         - agentPingTest
 
     '''
-    required = {}
-    optional = {'types': 'types',
-                'tag': 'tag',
-                'tag_reg_exp': 'tagRegExp'}
+    required = []
+    optional = ['types', 'tag', 'tagRegExp']
 
     req_args = validate_kwargs(required, optional, **kwargs)
     types = req_args['types']
@@ -47,9 +45,8 @@ def delete_internal_monitors(**kwargs):
         - 6 for load average monitors
         - 7 for CPU monitors
     '''
-    required = {'test_ids': 'testIds', 'type': 'type'}
-    optional = {}
-
+    required = ['testIds', 'type']
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='deleteInternalMonitors', **req_args)
 
@@ -61,11 +58,9 @@ def agent_monitors(**kwargs):
     Monitis API.  Rather, it is a helper, and requires that the calling
     function supply the action, in addition to the agent ID.
     '''
-    required = {'agent_id': 'agentId', 'action': 'action'}
-    optional = {}
-
+    required = ['agentId', 'action']
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
-
     return get(**req_args)
 
 
@@ -76,11 +71,9 @@ def internal_info(**kwargs):
     Monitis API.  Rather, it is a helper, and requires that the calling
     function supply the action, in addition to the agent ID.
     '''
-    required = {'monitor_id': 'monitorId', 'action': 'action'}
-    optional = {}
-
+    required = ['monitorId', 'action']
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
-
     return get(**req_args)
 
 
@@ -91,13 +84,7 @@ def internal_result(**kwargs):
     Monitis API.  Rather, it is a helper, and requires that the calling
     function supply the action, in addition to the agent ID.
     '''
-    required = {'monitor_id': 'monitorId',
-                'day': 'day',
-                'month': 'month',
-                'year': 'year',
-                'action': 'action'}
-    optional = {'timezone': 'timezone'}
-
+    required = ['monitorId', 'day', 'month', 'year', 'action']
+    optional = ['timezone']
     req_args = validate_kwargs(required, optional, **kwargs)
-
     return get(**req_args)

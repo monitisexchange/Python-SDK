@@ -10,33 +10,24 @@ Copyright (c) 2012 Monitis. All rights reserved.
 from monitis.api import get, post, MonitisError, validate_kwargs
 import monitis.monitors.predefined.internal as internal
 
-
-common_required = {
-    'max_lost': 'maxLost',
-    'packets_count': 'packetsCount',
-    'packets_size': 'packetsSize',
-    'timeout': 'timeout',
-    'name': 'name',
-    'tag': 'tag'
-}
+common_required = ['maxLost', 'packetsCount', 'packetsSize', 'timeout',
+                   'name', 'tag']
 
 
 def add_internal_ping_monitor(**kwargs):
     ''' Add a new internal ping monitor '''
-    required = {'user_agent_id': 'userAgentId', 'url': 'url'}
-    required.update(common_required)
-    optional = {}
-
+    required = ['userAgentId', 'url']
+    required.extend(common_required)
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='addInternalPingMonitor', **req_args)
 
 
 def edit_internal_ping_monitor(**kwargs):
     ''' Edit the specified Ping monitor '''
-    required = {'test_id': 'testId'}
-    required.update(common_required)
-    optional = {}
-
+    required = ['testId']
+    required.extend(common_required)
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='editInternalPingMonitor', **req_args)
 

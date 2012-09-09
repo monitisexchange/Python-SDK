@@ -19,18 +19,9 @@ def add_contact(**kwargs):
     sendMonthlyReport, portable, country, textType
 
     '''
-    required = {'first_name': 'firstName',
-                'last_name': 'lastName',
-                'account': 'account',
-                'contact_type': 'contactType',
-                'timezone': 'timezone'}
-    optional = {'group': 'group',
-                'send_daily_report': 'sendDailyReport',
-                'send_weekly_report': 'sendWeeklyReport',
-                'send_monthly_report': 'sendMonthlyReport',
-                'portable': 'portable',
-                'country': 'country',
-                'text_type': 'textType'}
+    required = ['firstName', 'lastName', 'account', 'contactType', 'timezone']
+    optional = ['sendDailyReport', 'sendWeeklyReport','sendMonthlyReport',
+                'portable', 'country', 'textType']
 
     post_args = validate_kwargs(required, optional, **kwargs)
     return post(action='addContact', **post_args)
@@ -38,17 +29,9 @@ def add_contact(**kwargs):
 
 def edit_contact(**kwargs):
     '''  '''
-    required = {'contact_id': 'contactId'}
-
-    optional = {'first_name': 'firstName',
-                'last_name': 'lastName',
-                'account': 'account',
-                'contact_type': 'contactType',
-                'timezone': 'timezone',
-                'portable': 'portable',
-                'code': 'code',
-                'country': 'country',
-                'text_type': 'textType'}
+    required = ['contactId']
+    optional = ['firstName', 'lastName', 'account', 'contactType', 'timezone',
+                'portable', 'code', 'country', 'textType']
 
     post_args = validate_kwargs(required, optional, **kwargs)
     return post(action='editContact', **post_args)
@@ -71,9 +54,8 @@ def delete_contact(contact_id=None, contact_type=None, account=None):
 
 def confirm_contact(**kwargs):
     ''' Confirm the specified contact '''
-    required = {'contact_id': 'contactId',
-                'confirmation_key': 'confirmationKey'}
-    optional = {}
+    required = ['contactId', 'confirmationKey']
+    optional = []
 
     post_args = validate_kwargs(required, optional, **kwargs)
     return post(action='confirmContact', **post_args)
@@ -81,16 +63,16 @@ def confirm_contact(**kwargs):
 
 def contact_activate(**kwargs):
     ''' Activate the specified contact '''
-    required = {'contact_id': 'contactId'}
-    optional = {}
+    required = ['contactId']
+    optional = []
     post_args = validate_kwargs(required, optional, **kwargs)
     return post(action='contactActivate', **post_args)
 
 
 def contact_deactivate(**kwargs):
     ''' Deactivate the specified contact '''
-    required = {'contact_id': 'contactId'}
-    optional = {}
+    required = ['contactId']
+    optional = []
     post_args = validate_kwargs(required, optional, **kwargs)
     return post(action='contactDeactivate', **post_args)
 
@@ -109,9 +91,7 @@ def get_recent_alerts(**kwargs):
     ''' Get recent alerts history
 
     Start date and end date are in miliseconds since the Epoch'''
-    required = {}
-    optional = {'timezone': 'timezone',
-                'start_date': 'startDate',
-                'end_date': 'endDate'}
+    required = []
+    optional = ['timezone', 'startDate', 'endDate']
     post_args = validate_kwargs(required, optional, **kwargs)
     return get(action='recentAlerts', **post_args)

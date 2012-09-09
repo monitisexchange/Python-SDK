@@ -11,24 +11,13 @@ from monitis.api import get, post, MonitisError, validate_kwargs
 
 
 def add_notification_rule(**kwargs):
-    ''' '''
-    required = {'monitor_id': 'monitorId',
-                'monitor_type': 'monitorType',
-                'period': 'period',
-                'notify_backup': 'notifyBackup',
-                'continuous_alerts': 'continuousAlerts',
-                'failure_count': 'failureCount'}
+    ''' Add a notification rule for monitor - contact pair '''
+    required = ['monitorId', 'monitorType', 'period', 'notifyBackup',
+                'continuousAlerts', 'failureCount']
 
-    optional = {'weekday_from': 'weekdayFrom',
-                'weekday_to': 'weekdayTo',
-                'time_from': 'timeFrom',
-                'time_to': 'timeTo',
-                'contact_group': 'contactGroup',
-                'contact_id': 'contactId',
-                'min_failed_location_count': 'minFailedLocationCount',
-                'param_name': 'paramName',
-                'param_value': 'paramValue',
-                'comparing_method': 'comparingMethod'}
+    optional = ['weekdayFrom', 'weekdayTo', 'timeFrom', 'timeTo',
+                'contactGroup', 'contactId', 'minFailedLocationCount',
+                'paramName', 'paramValue', 'comparingMethod']
 
     post_args = validate_kwargs(required, optional, **kwargs)
 
@@ -51,11 +40,9 @@ def add_notification_rule(**kwargs):
 
 
 def delete_notification_rule(**kwargs):
-    ''' '''
-    required = {'contact_ids': 'contactIds',
-                'monitor_id': 'monitorId',
-                'monitor_type': 'monitorType'}
-    optional = {}
+    ''' Delete an existing notification rule for monitor - contact pair '''
+    required = ['contactIds', 'monitorId', 'monitorType']
+    optional = []
 
     post_args = validate_kwargs(required, optional, **kwargs)
 
@@ -68,10 +55,9 @@ def delete_notification_rule(**kwargs):
 
 
 def get_notification_rules(**kwargs):
-    ''' '''
-    required = {'monitor_id': 'monitorId',
-                'monitor_type': 'monitorType'}
-    optional = {}
+    ''' Get list of existing notification rules for the specified monitor '''
+    required = ['monitorId', 'monitorType']
+    optional = []
 
     get_args = validate_kwargs(required, optional, **kwargs)
     return get(action='getNotificationRules', **get_args)

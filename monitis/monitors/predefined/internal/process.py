@@ -10,32 +10,24 @@ Copyright (c) 2012 Monitis. All rights reserved.
 from monitis.api import get, post, MonitisError, validate_kwargs
 import monitis.monitors.predefined.internal as internal
 
-
-common_required = {
-    'cpu_limit': 'cpuLimit',
-    'memory_limit': 'memoryLimit',
-    'virtual_memory_limit': 'virtualMemoryLimit',
-    'name': 'name',
-    'tag': 'tag'
-}
+common_required = ['cpuLimit', 'memoryLimit', 'virtualMemoryLimit', 'name',
+                   'tag']
 
 
 def add_process_monitor(**kwargs):
     ''' Add a new internal process monitor '''
-    required = {'agentkey': 'agentkey', 'process_name': 'processName'}
-    required.update(common_required)
-    optional = {}
-
+    required = ['agentkey', 'processName']
+    required.extend(common_required)
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='addProcessMonitor', **req_args)
 
 
 def edit_process_monitor(**kwargs):
     ''' Edit the specified process monitor '''
-    required = {'test_id': 'testId'}
-    required.update(common_required)
-    optional = {}
-
+    required = ['testId']
+    required.extend(common_required)
+    optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
     return post(action='editProcessMonitor', **req_args)
 

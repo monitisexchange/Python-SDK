@@ -91,7 +91,7 @@ def validate_kwargs(required, optional, **kwargs):
 
     # turn optional list into dict
     if isinstance(optional, list):
-        for word in required:
+        for word in optional:
             temp_optional[camel2under(word)] = word
         optional = temp_optional
 

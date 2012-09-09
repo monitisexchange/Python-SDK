@@ -7,52 +7,40 @@ Created by Jeremiah Shirk on 2012-08-27.
 Copyright (c) 2012 Monitis. All rights reserved.
 """
 
-from monitis.api import get, post
+from monitis.api import get, post, validate_kwargs
 
 
-def add_page(title=None, column_count=None, **kwargs):
+def add_page(**kwargs):
     ''' Add a new page to user's dash board. '''
-    if title is None:
-        raise MonitisError('Page title is required')
-    if column_count is not None:
-        kwargs['columnCount'] = column_count
-
-    return post(action='addPage', title=title, **kwargs)
+    required = ['title']
+    optional = ['columnCount']
+    req_args = validate_kwargs(required, optional, **kwargs)
+    return post(action='addPage', **req_args)
 
 
-def add_page_module(module_name=None, page_id=None, column=None, row=None,
-                    data_module_id=None, **kwargs):
+def add_page_module(**kwargs):
     ''' Add a module to the specified page. '''
-    if module_name is None:
-        raise MonitisError("Module name is required")
-    if page_id is None:
-        raise MonitisError("Page ID is required")
-    if column is None:
-        raise MonitisError("Column is required")
-    if row is None:
-        raise MonitisError("Row is required")
-    if data_module_id is None:
-        raise MonitisError("Data module ID name is required")
+    required = ['moduleName', 'pageId', 'column', 'row', 'dataModuleId']
+    optional = ['height']
 
-    return post(action='addPageModule', moduleName=module_name,
-                pageId=page_id, column=column, row=row,
-                dataModuleId=data_module_id, **kwargs)
+    req_args = validate_kwargs(required, optional, **kwargs)
+    return post(action='addPageModule', **req_args)
 
 
-def delete_page(page_id=None, **kwargs):
+def delete_page(**kwargs):
     ''' Delete the specified page from user's dash board. '''
-    if page_id is None:
-        raise MonitisError('Page ID is required')
-    return post(action='deletePage', pageId=page_id)
+    required = ['pageId']
+    optional = []
+    req_args = validate_kwargs(required, optional, **kwargs)
+    return post(action='deletePage', **req_args)
 
 
-def delete_page_module(page_module_id=None, **kwargs):
+def delete_page_module(**kwargs):
     ''' Delete the specified module from the page. '''
-    if page_module_id is None:
-        raise MonitisError("Page module ID is required")
-
-    return post(action='deletePageModule',
-                pageModuleId=page_module_id, **kwargs)
+    required = ['pageModuleId']
+    optional = []
+    req_args = validate_kwargs(required, optional, **kwargs)
+    return post(action='deletePageModule', **req_args)
 
 
 def pages(**kwargs):
@@ -60,8 +48,9 @@ def pages(**kwargs):
     return get(action='pages', **kwargs)
 
 
-def page_modules(page_name=None, **kwargs):
+def page_modules(**kwargs):
     ''' Get all modules of the specified page. '''
-    if page_name is None:
-        raise MonitisError('Page name is required')
-    return get(action='pageModules', pageName=page_name, **kwargs)
+    required = ['pageName']
+    optional = []
+    req_args = validate_kwargs(required, optional, **kwargs)
+    return get(action='pageModules', **req_args)
