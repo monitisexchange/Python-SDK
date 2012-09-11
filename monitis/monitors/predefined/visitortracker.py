@@ -19,7 +19,12 @@ def visitor_tracking_tests(**kwargs):
 
 
 def visitor_tracking_info(**kwargs):
-    ''' get information about the specified Visitor Tracker '''
+    ''' get information about the specified Visitor Tracker 
+
+    Results are a list, but the order may differ from the docs
+    [siteId, url, name, monitorId], though it isn't
+    entirely clear.
+    '''
     required = ['siteId']
     optional = []
     req_args = validate_kwargs(required, optional, **kwargs)
