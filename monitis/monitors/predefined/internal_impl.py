@@ -27,7 +27,7 @@ def internal_monitors(**kwargs):
     optional = ['types', 'tag', 'tagRegExp']
 
     req_args = validate_kwargs(required, optional, **kwargs)
-    types = req_args['types']
+    types = req_args.get('types', None)
     if isinstance(types, list):
         req_args['types'] = ','.join(types)
     return get(action='internalMonitors', **req_args)
