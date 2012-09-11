@@ -17,7 +17,7 @@ def suspend_transaction_monitor(**kwargs):
     req_args = validate_kwargs(required, optional, **kwargs)
     monitor_ids = req_args.get('monitorIds', None)
     if isinstance(monitor_ids, list):
-        req_args['monitorIds'] = ','.join(monitor_ids)
+        req_args['monitorIds'] = ','.join(map(str,monitor_ids))
     return post(action='suspendTransactionMonitor', **req_args)
 
 
@@ -28,7 +28,7 @@ def activate_transaction_monitor(**kwargs):
     req_args = validate_kwargs(required, optional, **kwargs)
     monitor_ids = req_args.get('monitorIds', None)
     if isinstance(monitor_ids, list):
-        req_args['monitorIds'] = ','.join(monitor_ids)
+        req_args['monitorIds'] = ','.join(map(str,monitor_ids))
     return post(action='activateTransactionMonitor', **req_args)
 
 
@@ -97,5 +97,5 @@ def transaction_snapshot(**kwargs):
     req_args = validate_kwargs(required, optional, **kwargs)
     location_ids = req_args.get('locationIds', None)
     if isinstance(location_ids, list):
-        req_args['locationIds'] = ','.join(location_ids)
+        req_args['locationIds'] = ','.join(map(str,location_ids))
     return get(action='transactionSnapshot', **req_args)
