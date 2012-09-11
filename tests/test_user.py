@@ -91,6 +91,6 @@ class TestUserApi:
 
     def test_delete_sub_account_pages(self):
         page_title = get(action='pages')[0]['title']
-        res = monitis.user.add_sub_account_pages(user_id=self.test_account_id,
+        res = monitis.user.delete_sub_account_pages(user_id=self.test_account_id,
                                                  pages=[page_title])
         assert_equal(res['status'], 'ok')
