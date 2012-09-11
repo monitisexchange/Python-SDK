@@ -371,8 +371,8 @@ class Monitis:
         '''Create a new Monitis object'''
         self.auth_token = None
         self.url = _url or _api_url()
-        self.apikey = apikey or resolve_apikey()
-        self.secretkey = secretkey or resolve_secretkey()
+        self.apikey = apikey or self.resolve_apikey()
+        self.secretkey = secretkey or self.resolve_secretkey()
         self.validation = validation or 'HMACSHA1'
         self.version = version or '2'
 
